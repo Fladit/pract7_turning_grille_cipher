@@ -3,6 +3,7 @@ import copy
 import math
 
 
+# Проверка, можно ли из данной колонки сделать 'вырез' трофарета.
 def check_cell_identity(matrix: list, row_index: int, column_index: int, row_number: int, column_number: int):
     if (matrix[row_index][column_index] == False
             and matrix[row_index][column_number - column_index - 1] == False
@@ -14,10 +15,15 @@ def check_cell_identity(matrix: list, row_index: int, column_index: int, row_num
         return False
 
 
+# Производит реверсию матрицы.
 def reverse_template(template_matrix: list):
     for row in template_matrix:
         row.reverse()
     return template_matrix
+
+
+''' Разворот трафарета на 180 градусов. (Реверсия позиции строк, первая становится последней, последняя - первой, 
+# и т.д; реверсия строк) '''
 
 
 def rotate_template_to_180_degree(template_matrix: list):
@@ -27,6 +33,7 @@ def rotate_template_to_180_degree(template_matrix: list):
     return template_matrix
 
 
+# Частичная шифрация слова по вырезу текущего трофарета.
 def encode_part_of_matrix_by_template(template_matrix, word, index, encode_matrix):
     for i in range(0, len(template_matrix)):
         for j in range(0, len(template_matrix[0])):
@@ -36,6 +43,7 @@ def encode_part_of_matrix_by_template(template_matrix, word, index, encode_matri
     return encode_matrix, index
 
 
+# Функция для шифрации сообщения
 def encode(template_matrix, word: str):
     word_corrected = word
     while len(word_corrected) < len(template_matrix) * len(template_matrix[0]):
@@ -68,6 +76,7 @@ def encode(template_matrix, word: str):
     return encode_matrix
 
 
+# Дешифрация части сообщения по текущему трафарету
 def decode_part_of_encode_word(encode_word, key_matrix):
     decode_part = ""
     for i in range(0, len(key_matrix)):
@@ -77,6 +86,7 @@ def decode_part_of_encode_word(encode_word, key_matrix):
     return decode_part
 
 
+# Функция для дешифрации сообщения
 def decode(encode_word, key_matrix):
     decode_word = ""
     decode_word += decode_part_of_encode_word(encode_word, key_matrix)
@@ -90,6 +100,7 @@ def decode(encode_word, key_matrix):
     return decode_word
 
 
+# Создание трафарета по количеству строк и столбцов. Каждый раз создаётся рандомный трафарет.
 def create_template(m: int, k: int):
     matrix_template = []
     matrix_possible = []
@@ -118,6 +129,10 @@ def create_template(m: int, k: int):
     return matrix_template
 
 
+''' Нахождение множителей числа. Используется для выявления количества строк и столбцов, необходимых для создания 
+трафарета.  '''
+
+
 def factorization(size: int):
     multipliers = []
     for i in range(2, size, 2):
@@ -134,6 +149,7 @@ def factorization(size: int):
     return rand_multiplier, second_multiplier
 
 
+# Функция определения количества строк и столбцов для трафарета.
 def determine_size_of_matrix(word: str):
     word_len = len(word)
     if word_len % 2 == 1:
@@ -161,4 +177,3 @@ print("\nЗакодированное слово:", encode_word)
 print("Процесс декодирования...")
 decode_word = decode(encode_matrix, matrix_template)
 print("Декодированное слово:", decode_word)
-
